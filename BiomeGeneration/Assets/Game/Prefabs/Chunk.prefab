@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 623016204755225456}
   _meshFilter: {fileID: 3405164035462643642}
+  height: 1
 --- !u!1001 &2442030966153210469
 PrefabInstance:
   m_ObjectHideFlags: 0
