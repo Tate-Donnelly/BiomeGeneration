@@ -116,7 +116,7 @@ public class ChunkManager : MonoBehaviour
     private Vector3 GetTilePosition(int[,] chunkPositions, int[] mapPosition, int chunkRow, int chunkCol)
     {
         float xPos = ((chunkRow - (mapWidth*mapPosition[0])) * tileWidth);
-        float yPos = chunkPositions[chunkRow,chunkCol];
+        float yPos = chunkPositions[chunkRow,chunkCol]-tileHeight-1;
         float zPos = ((chunkCol - (mapLength*mapPosition[1])) * tileWidth);
         return new Vector3(xPos, yPos, zPos);
     }
