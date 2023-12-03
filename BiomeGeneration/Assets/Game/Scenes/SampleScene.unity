@@ -297,14 +297,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1272739912}
     - target: {fileID: 6223027497674215357, guid: 5db491ec6be0b1440b552a5d13d73d40, type: 3}
-      propertyPath: sensX
-      value: 1200
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223027497674215357, guid: 5db491ec6be0b1440b552a5d13d73d40, type: 3}
-      propertyPath: sensY
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6223027497674215357, guid: 5db491ec6be0b1440b552a5d13d73d40, type: 3}
       propertyPath: orientation
       value: 
       objectReference: {fileID: 1227618268}
