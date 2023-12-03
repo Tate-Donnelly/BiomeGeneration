@@ -4,26 +4,31 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
+    [Header("Mouse sensitivity")]
     public float sensX;
     public float sensY;
 
-    public Transform orientation;
-
+    [Header("Mouse rotation")]
     private float xRotation;
     private float yRotation;
+    
+    [Header("Orientation of player camera")]
+    public Transform orientation;
 
     private void Start()
     {
+        //Cursor settings
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        //gets mouse input
+        // Gets mouse input
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime*sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y")* Time.deltaTime*sensY;
 
+        // Calculates Rotation
         yRotation += mouseX;
 
         xRotation -= mouseY;

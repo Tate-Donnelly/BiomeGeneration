@@ -257,3 +257,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   orientation: {fileID: 6962171020699024314}
+  rb: {fileID: 1179374065125827415}

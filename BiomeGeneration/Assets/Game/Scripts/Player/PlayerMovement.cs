@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
+    
+    float horizontalInput;
+    float verticalInput;
+    Vector3 moveDirection;
 
     [HideInInspector] public float walkSpeed;
     [HideInInspector] public float sprintSpeed;
@@ -25,18 +29,13 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     bool grounded;
 
+    [Header("References")]
     public Transform orientation;
 
-    float horizontalInput;
-    float verticalInput;
-
-    Vector3 moveDirection;
-
-    Rigidbody rb;
+    public Rigidbody rb;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
         readyToJump = true;
@@ -47,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
 
-        MyInput();
+        PlayerInput();
         SpeedControl();
 
         // handle drag
@@ -62,7 +61,10 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void MyInput()
+    /// <summary>
+    /// Collects player input info
+    /// </summary>
+    private void PlayerInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
@@ -78,32 +80,41 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates the direction moved and uses that to move the rigidbody
+    /// </summary>
     private void MovePlayer()
     {
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // on ground
-        if(grounded)
+        if (grounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-
-        // in air
-        else if(!grounded)
+        } else
+        {
+            // in air
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
     }
 
+    /// <summary>
+    /// Limits the velocity if necessary
+    /// </summary>
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
         if(flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
-
+    
+    /// <summary>
+    /// Makes the player jump
+    /// </summary>
     private void Jump()
     {
         // reset y velocity
@@ -111,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
+    
     private void ResetJump()
     {
         readyToJump = true;
