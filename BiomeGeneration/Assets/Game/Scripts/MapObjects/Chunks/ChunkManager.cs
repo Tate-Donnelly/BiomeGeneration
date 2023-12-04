@@ -36,9 +36,9 @@ public class ChunkManager : MonoBehaviour
         //TODO: Remove temporary chunkPositions and LoadData function from Awake
         int[,] chunk =
         {
+            { 1, 0, 1, 1 },
             { 1, 1, 1, 1 },
-            { 1, 1, 1, 1 },
-            { 1, 1, 1, 1 },
+            { 1, 1, 2, 1 },
             { 1, 1, 1, 1 }
         };
 
@@ -94,11 +94,12 @@ public class ChunkManager : MonoBehaviour
                 //Gets the correct biome material
                 Material material=materialDictionary[(Biome) biome];
                 
-                //Gets the needed mesh
-                Mesh mesh = GetTileMesh(i, j);
                 
                 //Create the actual chunk
                 Chunk chunk=Instantiate(chunkPrefab, transform);
+                //Gets the needed mesh
+                Mesh mesh = GetTileMesh(chunkPositions,i, j);
+                
                 chunk.Init(pos,mesh,material);
             }
         }
@@ -117,6 +118,7 @@ public class ChunkManager : MonoBehaviour
     {
         float xPos = ((chunkRow - (mapWidth*mapPosition[0])) * tileWidth);
         float yPos = chunkPositions[chunkRow,chunkCol]-tileHeight-1;
+        yPos = Mathf.Clamp(yPos, -tileHeight, 10);
         float zPos = ((chunkCol - (mapLength*mapPosition[1])) * tileWidth);
         return new Vector3(xPos, yPos, zPos);
     }
@@ -126,18 +128,15 @@ public class ChunkManager : MonoBehaviour
     /// </summary>
     /// <param name="row">The row of the tile</param>
     /// <param name="col">The col of the tile</param>
-    /// <param name="isSpecial">Whether or not the tile requires a special mesh,
-    /// such as a road or water</param>
     /// <returns>The appropriate mesh for the specified tile</returns>
-    private Mesh GetTileMesh(int row, int col, bool isSpecial=false)
+    private Mesh GetTileMesh(int[,] chunkPositions,int row, int col )
     {
         // TODO: Allow for rotation
-        // TODO: Take into account tiles with differing heights
-        if (isSpecial)
+        if (chunkPositions[row, col] == 0)
         {
-            //TODO: Use this once landscape chunkPositions is ready
+            return meshDictionary[TileMesh.Water];
         }
-        
+        /*
         //If in the center
         if ((row == numRows - 1 && (col==0 || col==numCols-1)) || 
             (col == numCols - 1 && (row==0 || row==numRows-1))) {
@@ -148,7 +147,7 @@ public class ChunkManager : MonoBehaviour
         if (row == numRows - 1 || col == numCols - 1)
         {
             return meshDictionary[TileMesh.Edge];
-        }
+        }*/
         return meshDictionary[TileMesh.Center];
     }
 }
@@ -157,7 +156,8 @@ public enum TileMesh
 {
     Center,
     Edge,
-    Corner
+    Corner,
+    Water
 }
 
 public enum MaterialType
