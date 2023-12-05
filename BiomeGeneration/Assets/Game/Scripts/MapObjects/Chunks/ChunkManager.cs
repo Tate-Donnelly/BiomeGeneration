@@ -38,7 +38,7 @@ public class ChunkManager : MonoBehaviour
         string[,] chunk =
         {
             { "1ca","1tt","1lh","1cb" },
-            { "1tr","1s","1r","1tl" },
+            { "1tr","1t","1r","1tl" },
             { "1lv","1","0","1lv" },
             { "1cd","1td","1lh","1cc" },
         };
