@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour {
+public class MapGenerator : MonoBehaviour
+{
 
+    [SerializeField] private ChunkManager _chunkManager;
     [SerializeField] int chunkSize = 16; // Num of tiles on a given edge of a chunk
     [SerializeField] int numChunks = 2; // Uses this to construct this into a square
 
