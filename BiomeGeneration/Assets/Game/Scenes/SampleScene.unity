@@ -398,6 +398,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
       propertyPath: meshDictionary._serializedList.Array.data[1].Key
       value: 1
       objectReference: {fileID: 0}
@@ -482,6 +486,30 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[1].Key
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[2].Key
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[3].Key
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[4].Key
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[5].Key
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[6].Key
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
       propertyPath: materialDictionary._serializedList.Array.data[0].Value
       value: 
       objectReference: {fileID: 2100000, guid: a44d3cec97d015340944a26efb1f7971, type: 2}
@@ -505,6 +533,34 @@ PrefabInstance:
       propertyPath: materialDictionary._serializedList.Array.data[5].Value
       value: 
       objectReference: {fileID: 2100000, guid: a6a9daffd97df7545b640ad5f896c383, type: 2}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[0].Value
+      value: 
+      objectReference: {fileID: 537420372971269745, guid: 83e9f2baa8ffe7c428e3424227a4287e, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[1].Value
+      value: 
+      objectReference: {fileID: 5691666353457927829, guid: d0a2dbd0fe7556b4b822ec7a20748cc1, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[2].Value
+      value: 
+      objectReference: {fileID: 3284317394355905387, guid: 7292cbbcd062e3440b9895a64d229825, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[3].Value
+      value: 
+      objectReference: {fileID: -2519473635315226807, guid: 0c0ba75d16315fd45b7dd51920b32045, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[4].Value
+      value: 
+      objectReference: {fileID: 937769394448486817, guid: 9515c260d15c8d9459e425512a9d8366, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[5].Value
+      value: 
+      objectReference: {fileID: 836848771264170200, guid: 991cfd69cbe918147a8b0d6390e3ce60, type: 3}
+    - target: {fileID: 3577722635192342089, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
+      propertyPath: propMeshDictionary._serializedList.Array.data[6].Value
+      value: 
+      objectReference: {fileID: 2137208523138566550, guid: c66ae5d8378321a4d8d6876b0dfbd9eb, type: 3}
     - target: {fileID: 5146987156052724934, guid: c904ab8dd9d594f4da6374800263a08f, type: 3}
       propertyPath: m_Name
       value: ChunkManager

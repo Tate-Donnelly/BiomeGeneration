@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 623016204755225456}
   _meshFilter: {fileID: 3405164035462643642}
+  mapObjectPrefab: {fileID: 7047743497273635044, guid: b6cb0372961e06149a21146684494651, type: 3}
 --- !u!54 &6040427808091258380
 Rigidbody:
   m_ObjectHideFlags: 0

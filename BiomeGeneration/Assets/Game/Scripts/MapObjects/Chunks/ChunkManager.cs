@@ -13,8 +13,11 @@ public class ChunkManager : MonoBehaviour
     //Inspector
     //References
     [SerializeField] private Tile _tilePrefab;
+    [SerializeField] private MapObject _propPrefab;
     [SerializeField]
     private SerializedDictionary<TileMesh, Mesh> meshDictionary = new SerializedDictionary<TileMesh, Mesh>();
+    [SerializeField]
+    private SerializedDictionary<PropType, Mesh> propMeshDictionary = new SerializedDictionary<PropType, Mesh>();
     [SerializeField]
     private SerializedDictionary<Biome, Material> materialDictionary = new SerializedDictionary<Biome, Material>();
 
@@ -35,7 +38,7 @@ public class ChunkManager : MonoBehaviour
         string[,] chunk =
         {
             { "1ca","1tt","1lh","1cb" },
-            { "1tr","1","1","1tl" },
+            { "1tr","1t","1r","1tl" },
             { "1lv","1","0","1lv" },
             { "1cd","1td","1lh","1cc" },
         };
@@ -72,6 +75,25 @@ public class ChunkManager : MonoBehaviour
         chunks=new Tile[numRows,numCols];
         
         CreateChunks(mapPosition, chunkPosition,biome);
+    }
+
+    /// <summary>
+    /// Get mesh that corresponds to the given char
+    /// </summary>
+    /// <param name="prop">The char that corresponds to a prop</param>
+    /// <returns>The mesh needed for the given prop</returns>
+    private Mesh GetPropMesh(char prop)
+    {
+        switch (prop)
+        {
+            case 'c': return propMeshDictionary[PropType.Cabin];
+            case 'f': return propMeshDictionary[PropType.Flower];
+            case 'g': return propMeshDictionary[PropType.Grass];
+            case 'r': return propMeshDictionary[PropType.Rock];
+            case 't': return propMeshDictionary[PropType.Tree];
+            case 's': return propMeshDictionary[PropType.Stump];
+            case 'b' or _: return propMeshDictionary[PropType.FlatRock];
+        }
     }
 
     /// <summary>
@@ -117,12 +139,22 @@ public class ChunkManager : MonoBehaviour
         {
             Quaternion quat = RotateTile(tileInfo[1].ToString(), tileInfo[2].ToString());
             tile=Instantiate(_tilePrefab, pos, quat );
+            tile.transform.parent = transform;
         }
         else
         {
             tile=Instantiate(_tilePrefab, transform);
         }
-        tile.Init(pos,mesh,material);
+
+        if (tileInfo.Length == 2)
+        {
+            Mesh propMesh = GetPropMesh(tileInfo[1]);
+            tile.Init(pos,mesh,material,propMesh);
+        }
+        else
+        {
+            tile.Init(pos,mesh,material);
+        }
     }
 
     /// <summary>
@@ -152,22 +184,10 @@ public class ChunkManager : MonoBehaviour
     {
         int height=tileInfo[0];
 
-        if (tileInfo.Length>1)
+        if (tileInfo.Length==3)
         {
             string topographyType = tileInfo[1].ToString();
-            if (topographyType == "c")
-            {
-                return meshDictionary[TileMesh.CornerPath];
-            }
-            if (topographyType == "t")
-            {
-                return meshDictionary[TileMesh.ThreeWayPath];
-            }
-            
-            if (topographyType == "l")
-            {
-                return meshDictionary[TileMesh.StraightPath];
-            }
+            return GetPathMesh(topographyType);
         }
         
         if (height == 0)
@@ -178,6 +198,30 @@ public class ChunkManager : MonoBehaviour
         return meshDictionary[TileMesh.Center];
     }
 
+    /// <summary>
+    /// Gets the path mesh that corresponds with the given pathType
+    /// </summary>
+    /// <param name="pathType">The type of the path</param>
+    /// <returns>The mesh of the needed path</returns>
+    private Mesh GetPathMesh(string pathType)
+    {
+        if (pathType == "c")
+        {
+            return meshDictionary[TileMesh.CornerPath];
+        }
+        if (pathType == "t")
+        {
+            return meshDictionary[TileMesh.ThreeWayPath];
+        }
+        return meshDictionary[TileMesh.StraightPath];
+    }
+
+    /// <summary>
+    /// Rotates the tile based on the type and given direction
+    /// </summary>
+    /// <param name="type">The type of tile (mesh of the tile)</param>
+    /// <param name="direction">The direction the tile should be oriented</param>
+    /// <returns>A Quaternion with the necessary rotation</returns>
     private Quaternion RotateTile(string type,string direction)
     {
         if (type == "c")
@@ -197,6 +241,11 @@ public class ChunkManager : MonoBehaviour
         return Quaternion.identity;
     }
 
+    /// <summary>
+    /// Rotates the tile based on the given direction
+    /// </summary>
+    /// <param name="direction">The direction the tile should be oriented</param>
+    /// <returns>A Quaternion with the necessary rotation</returns>
     private Quaternion RotateMultiplePaths(string direction)
     {
         float y=0;
@@ -213,6 +262,11 @@ public class ChunkManager : MonoBehaviour
         return Quaternion.Euler(0,y,0);
     }
     
+    /// <summary>
+    /// Rotates the line tile based on the given direction
+    /// </summary>
+    /// <param name="direction">The direction the tile should be oriented</param>
+    /// <returns>A Quaternion with the necessary rotation</returns>
     private Quaternion RotateLine(string direction)
     {
         float y=0;
@@ -224,6 +278,11 @@ public class ChunkManager : MonoBehaviour
         return quat;
     }
 
+    /// <summary>
+    /// Rotates the corner tile based on the given direction
+    /// </summary>
+    /// <param name="direction">The direction the tile should be oriented</param>
+    /// <returns>A Quaternion with the necessary rotation</returns>
     private Quaternion RotateCorner(string direction)
     {
         float y=0;
@@ -252,10 +311,15 @@ public enum TileMesh
     ThreeWayPath
 }
 
-public enum MaterialType
+public enum PropType
 {
-    Tile,
-    Path
+    Cabin,
+    Flower,
+    Grass,
+    Rock,
+    Tree,
+    Stump,
+    FlatRock
 }
 
 public enum Biome
