@@ -5,7 +5,6 @@ using UnityEngine;
 public class Tile : MapObject
 {
     //0 is left of the chunk, 1 is above the chunk, 2 is to the right of the chunk, 3 is below the chunk
-    private Tile[] nearbyChunks = new Tile[4];
     [SerializeField] private MapObject mapObjectPrefab;
     private Mesh propMesh;
     
@@ -20,14 +19,17 @@ public class Tile : MapObject
         base.Init(mesh, material);
         transform.position = position;
         this.propMesh = propMesh;
-        InstantiateProp(material);
+        InstantiateProp();
     }
 
-    private void InstantiateProp(Material material)
+    /// <summary>
+    /// Instantiate prop and use the given material
+    /// </summary>
+    private void InstantiateProp()
     {
         Vector3 position = transform.position;
         MapObject environmentObject =Instantiate(mapObjectPrefab);
-        environmentObject.Init(propMesh,material);
+        environmentObject.Init(propMesh,base._meshRenderer.material);
         environmentObject.transform.position =
             new Vector3(position.x, position.y, position.z);
     }

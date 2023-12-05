@@ -77,6 +77,11 @@ public class ChunkManager : MonoBehaviour
         CreateChunks(mapPosition, chunkPosition,biome);
     }
 
+    /// <summary>
+    /// Get mesh that corresponds to the given char
+    /// </summary>
+    /// <param name="prop">The char that corresponds to a prop</param>
+    /// <returns>The mesh needed for the given prop</returns>
     private Mesh GetPropMesh(char prop)
     {
         switch (prop)
