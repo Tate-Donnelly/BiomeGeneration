@@ -117,6 +117,7 @@ public class ChunkManager : MonoBehaviour
         {
             Quaternion quat = RotateTile(tileInfo[1].ToString(), tileInfo[2].ToString());
             tile=Instantiate(_tilePrefab, pos, quat );
+            tile.transform.parent = transform;
         }
         else
         {
