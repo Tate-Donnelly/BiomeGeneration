@@ -7,34 +7,21 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] int chunkSize = 16; // Num of tiles on a given edge of a chunk
     [SerializeField] int numChunks = 2; // Uses this to construct this into a square
 
+    public Biome[,] chunkBiomes;
 
-    public enum BiomeTypes{
-
-        Spring = 0,
-        Summer = 1,
-        Fall = 2,
-        Winter = 3,
-        Desert = 4,
-        CandyLand = 5;
-        
-    }
-
-    public BiomeTypes chunkBiomes[numChunks][numChunks];
-
-    public ChunkTile chunks[numChunks][numChunks];
+    public ChunkTile[,] chunks;
 
     void Start(){
+        chunkBiomes=new Biome[numChunks,numChunks];
+        chunks=new ChunkTile[numChunks,numChunks];
         //Create perlin texture
         
         //Run generation
-        for(int i = 0; i < numChunks; i++;){
+        for(int i = 0; i < numChunks; i++){
             for(int j = 0; j < numChunks; j++){
-                chunkBiomes[i][j] = new ChunkTile(BiomeTypes.Spring);
-
+                chunks[i,j] = new ChunkTile(Biome.Spring);
             }
-
         }
-    
     }
 
     //Generates biome off of the averge heat map sectors of an image that is...
@@ -54,58 +41,37 @@ public class MapGenerator : MonoBehaviour {
         return null;
     }
 
-    class ChunkTile {
+    public class ChunkTile {
 
-        BiomeTypes biome;
-        //int chunkSize; 
+        Biome biome;
+        int chunkSize; 
 
-        string heightMap[this.chunkSize][this.chunkSize]; //Numbers and letters are used in tandem
+        string[,] heightMap; //Numbers and letters are used in tandem
 
-        char objectMap[this.chunkSize][this.chunkSize]; //Only chars are used for this
+        char[,] objectMap; //Only chars are used for this
 
 
         //This is only set when you initialize since it needs it for ...
         // Literally Everything Else
-        public ChunkTile(BiomeTypes biome){
+        public ChunkTile(Biome biome){
             this.biome = biome;
             setHeights();
-
+            heightMap=new string[chunkSize,chunkSize]; //Numbers and letters are used in tandem
+            objectMap=new char[chunkSize,chunkSize]; //Only chars are used for this
         }
 
 
 
         void setHeights(){
-            for (int i = 0; i < this.chunkSize; i++){
-                for (int j = 0; j < this.chunkSize; j++){
+            for (int i = 0; i < chunkSize; i++){
+                for (int j = 0; j < chunkSize; j++){
                     if(i % 2 == 0){
-                        string heightMap[i][j] = 2;
+                        heightMap[i,j] = "2";
                     } else {
-                        string heightMap[i][j] = 0;
-
+                        heightMap[i,j] = "0";
                     }
-
                 }
-                
             }
-
-
-
-
         }
-
-
-
-       
-
-
-
-
     }
-
-
-
-
-
-
-
 }
