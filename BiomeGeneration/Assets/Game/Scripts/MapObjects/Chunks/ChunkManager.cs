@@ -31,6 +31,7 @@ public class ChunkManager : MonoBehaviour
     
     void Awake()
     {
+        
         //TODO: Remove temporary chunkPositions and LoadData function from Awake
         string[,] chunk =
         {
@@ -46,8 +47,8 @@ public class ChunkManager : MonoBehaviour
             { 3, 4, 5}
         };
 
-        mapWidth = tileWidth * chunk.GetLength(0) * .30f * biomes.GetLength(0);
-        mapLength = tileWidth * chunk.GetLength(1) * .20f * biomes.GetLength(1);
+        mapWidth = tileWidth * chunk.GetLength(0) * (biomes.GetLength(0)/100) * biomes.GetLength(0);
+        mapLength = tileWidth * chunk.GetLength(1) * (biomes.GetLength(1)/100) * biomes.GetLength(1);
 
         mapGen = new MapGenerator();
 
@@ -59,7 +60,7 @@ public class ChunkManager : MonoBehaviour
                 // This is where the biomes need to be generated
                 print(mapGen.chunks[0,0].heightMap);
 
-                LoadData(mapGen.chunks[1,0].heightMap,  new []{i,j}, biomes[i,j]);
+                LoadData(mapGen.chunks[1,1].heightMap,  new []{i,j}, biomes[i,j]);
             }
         }
     }
