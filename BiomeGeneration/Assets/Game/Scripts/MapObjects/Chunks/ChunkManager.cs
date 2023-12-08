@@ -16,7 +16,7 @@ public class ChunkManager : MonoBehaviour
     private SerializedDictionary<PropType, Mesh> propMeshDictionary = new SerializedDictionary<PropType, Mesh>();
     [SerializeField]
     private SerializedDictionary<Biome, Material> materialDictionary = new SerializedDictionary<Biome, Material>();
-    public MapGenerator mapGen;
+    private MapGenerator mapGen;
 
     //Variables
     public static int tileWidth=2;
@@ -48,8 +48,8 @@ public class ChunkManager : MonoBehaviour
 
         mapWidth = tileWidth * chunk.GetLength(0) * .30f * biomes.GetLength(0);
         mapLength = tileWidth * chunk.GetLength(1) * .20f * biomes.GetLength(1);
-        
-        mapGen=FindObjectOfType<MapGenerator>();
+
+        mapGen = new MapGenerator();
 
 
         for (int i=0; i<biomes.GetLength(0);i++)
@@ -57,7 +57,7 @@ public class ChunkManager : MonoBehaviour
             for (int j=0; j<biomes.GetLength(1);j++)
             {
                 // This is where the biomes need to be generated
-                print(mapGen.chunks[0,0] == null);
+                print(mapGen.chunks[0,0].heightMap);
 
                 LoadData(mapGen.chunks[0,0].heightMap,  new []{i,j}, biomes[i,j]);
             }
