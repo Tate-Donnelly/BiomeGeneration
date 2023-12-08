@@ -59,7 +59,7 @@ public class ChunkManager : MonoBehaviour
                 // This is where the biomes need to be generated
                 print(mapGen.chunks[0,0].heightMap);
 
-                LoadData(mapGen.chunks[0,0].heightMap,  new []{i,j}, biomes[i,j]);
+                LoadData(mapGen.chunks[1,0].heightMap,  new []{i,j}, biomes[i,j]);
             }
         }
     }
