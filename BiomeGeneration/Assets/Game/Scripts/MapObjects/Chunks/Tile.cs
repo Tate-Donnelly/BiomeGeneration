@@ -32,6 +32,7 @@ public class Tile : MapObject
         environmentObject.Init(propMesh,base._meshRenderer.material);
         environmentObject.transform.position =
             new Vector3(position.x, position.y, position.z);
+        environmentObject.transform.parent = transform;
     }
     
 }
