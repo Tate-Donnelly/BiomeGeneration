@@ -1,7 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
-
-
+using System;
 /// <summary>
 /// Manages loading the chunkPositions and using it to create chunks with the specified position and biome.
 /// </summary>
@@ -17,6 +16,7 @@ public class ChunkManager : MonoBehaviour
     private SerializedDictionary<PropType, Mesh> propMeshDictionary = new SerializedDictionary<PropType, Mesh>();
     [SerializeField]
     private SerializedDictionary<Biome, Material> materialDictionary = new SerializedDictionary<Biome, Material>();
+    public MapGenerator mapGen;
 
     //Variables
     public static int tileWidth=2;
@@ -28,15 +28,15 @@ public class ChunkManager : MonoBehaviour
     private Tile[,] chunks;
     private float mapWidth;
     private float mapLength;
-
+    
     void Awake()
     {
         //TODO: Remove temporary chunkPositions and LoadData function from Awake
         string[,] chunk =
         {
-            { "1ca","1tt","1lh","1cb" },
-            { "1tr","1t","1r","1tl" },
-            { "1lv","1","0","1lv" },
+            { "2","1","1lh","1cb" },
+            { "1tr","1","0","1tl" },
+            { "1lv","2t","3t","1lv" },
             { "1cd","1td","1lh","1cc" },
         };
 
@@ -49,11 +49,17 @@ public class ChunkManager : MonoBehaviour
         mapWidth = tileWidth * chunk.GetLength(0) * .30f * biomes.GetLength(0);
         mapLength = tileWidth * chunk.GetLength(1) * .20f * biomes.GetLength(1);
         
+        mapGen=FindObjectOfType<MapGenerator>();
+
+
         for (int i=0; i<biomes.GetLength(0);i++)
         {
             for (int j=0; j<biomes.GetLength(1);j++)
             {
-                LoadData(chunk,  new []{i,j},biomes[i,j]);
+                // This is where the biomes need to be generated
+                print(mapGen.chunks[0,0] == null);
+
+                LoadData(mapGen.chunks[0,0].heightMap,  new []{i,j}, biomes[i,j]);
             }
         }
     }
@@ -61,17 +67,18 @@ public class ChunkManager : MonoBehaviour
     /// <summary>
     /// Loads the mapPosition of a given tile
     /// </summary>
-    /// <param name="mapPosition">An array where the chunks in the map</param>
+    /// <param name="tileType">An array where the chunks in the map</param>
     /// <param name="chunkPosition">An array containing the positioning of each
     /// of the tiles in a tile</param>
     /// <param name="biome">The biome of the tile</param>
-    public void LoadData(string[,] mapPosition, int[] chunkPosition, int biome)
+    public void LoadData(string[,] tileType, int[] chunkPosition, int biome)
     {
-        numRows = mapPosition.GetLength(0);
-        numCols = mapPosition.GetLength(1);
+        numRows = tileType.GetLength(0);
+        numCols = tileType.GetLength(1);
         chunks=new Tile[numRows,numCols];
         
-        CreateChunks(mapPosition, chunkPosition,biome);
+        //Renders the chunk
+        CreateChunks(tileType, chunkPosition, biome);
     }
 
     /// <summary>
@@ -101,17 +108,20 @@ public class ChunkManager : MonoBehaviour
     /// <param name="biome">The biome of the tile</param>
     private void CreateChunks(string[,] chunkPositions,int[] mapPosition, int biome)
     {
+        // actual chunk creation
+
         for (int i = 0; i < chunks.GetLength(0); i++)
         {
             for (int j = 0; j < chunks.GetLength(1); j++)
             {
-                string tileInfo=chunkPositions[i,j];
-                int height = tileInfo[0];
+
+                string tileInfo = chunkPositions[i,j];
+                int height = Int32.Parse(tileInfo[0].ToString());;
                 //Calculate the position
                 Vector3 pos = GetTilePosition(height,mapPosition,i,j);
                 
                 //Gets the correct biome material
-                Material material=materialDictionary[(Biome) biome];
+                Material material = materialDictionary[(Biome) biome];
                 
                 //Gets the needed mesh
                 Mesh mesh = GetTileMesh(chunkPositions[i, j]);
@@ -178,22 +188,22 @@ public class ChunkManager : MonoBehaviour
     /// <param name="tileInfo">The row of the tile</param>
     /// <returns>The appropriate mesh for the specified tile</returns>
     private Mesh GetTileMesh(string tileInfo)
-    {
-        int height=tileInfo[0];
-
-        if (tileInfo.Length==3)
         {
-            string topographyType = tileInfo[1].ToString();
-            return GetPathMesh(topographyType);
-        }
-        
-        if (height == 0)
-        {
-            return meshDictionary[TileMesh.Water];
-        }
+            int height=Int32.Parse(tileInfo[0].ToString());
 
-        return meshDictionary[TileMesh.Center];
-    }
+            if (tileInfo.Length==3)
+            {
+                string topographyType = tileInfo[1].ToString();
+                return GetPathMesh(topographyType);
+            }
+
+            if (height == 0)
+            {
+                return meshDictionary[TileMesh.Water];
+            }
+
+            return meshDictionary[TileMesh.Center];
+        }
 
     /// <summary>
     /// Gets the path mesh that corresponds with the given pathType

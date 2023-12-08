@@ -24,6 +24,7 @@ public class MapGenerator : MonoBehaviour
                 chunks[i,j] = new ChunkTile(Biome.Spring);
             }
         }
+
     }
 
     //Generates biome off of the averge heat map sectors of an image that is...
@@ -45,12 +46,12 @@ public class MapGenerator : MonoBehaviour
 
     public class ChunkTile {
 
-        Biome biome;
+        public Biome biome;
         int chunkSize; 
 
-        string[,] heightMap; //Numbers and letters are used in tandem
+        public string[,] heightMap; //Numbers and letters are used in tandem
 
-        char[,] objectMap; //Only chars are used for this
+        public char[,] objectMap; //Only chars are used for this
 
 
         //This is only set when you initialize since it needs it for ...
@@ -58,8 +59,10 @@ public class MapGenerator : MonoBehaviour
         public ChunkTile(Biome biome){
             this.biome = biome;
             setHeights();
-            heightMap=new string[chunkSize,chunkSize]; //Numbers and letters are used in tandem
-            objectMap=new char[chunkSize,chunkSize]; //Only chars are used for this
+            
+            //heightMap=new string[chunkSize,chunkSize]; //Numbers and letters are used in tandem
+            //objectMap=new char[chunkSize,chunkSize]; //Only chars are used for this
+
         }
 
 
@@ -68,7 +71,7 @@ public class MapGenerator : MonoBehaviour
             for (int i = 0; i < chunkSize; i++){
                 for (int j = 0; j < chunkSize; j++){
                     if(i % 2 == 0){
-                        heightMap[i,j] = "2";
+                        heightMap[i,j] = "1";
                     } else {
                         heightMap[i,j] = "0";
                     }
