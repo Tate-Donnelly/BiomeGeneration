@@ -25,7 +25,7 @@ public class ChunkManager : MonoBehaviour
     public static  int numCols;
 
     //Internal
-    private Tile[,] chunks;
+    private Tile[,]chunks;
     private float mapWidth;
     private float mapLength;
     
@@ -46,21 +46,24 @@ public class ChunkManager : MonoBehaviour
             { 0, 1, 2},
             { 3, 4, 5}
         };
-
-        mapWidth = tileWidth * chunk.GetLength(0) * (biomes.GetLength(0)/100) * biomes.GetLength(0);
-        mapLength = tileWidth * chunk.GetLength(1) * (biomes.GetLength(1)/100) * biomes.GetLength(1);
-
-        mapGen = new MapGenerator();
+        
+        mapGen = new MapGenerator(16, 4);
 
 
-        for (int i=0; i<biomes.GetLength(0);i++)
+        mapWidth = tileWidth * mapGen.chunkSize * (biomes.GetLength(0)/100) * biomes.GetLength(0);
+        mapLength = tileWidth * mapGen.chunkSize * (biomes.GetLength(1)/100) * biomes.GetLength(1);
+
+        
+        for (int i = 0; i < mapGen.numChunks; i++)
         {
-            for (int j=0; j<biomes.GetLength(1);j++)
+            for (int j = 0; j < mapGen.numChunks; j++)
             {
                 // This is where the biomes need to be generated
-                print(mapGen.chunks[0,0].heightMap);
+                //print(mapGen.chunks[0,0].heightMap);
+                Debug.Log((mapGen.chunks[i,j] == null) + " " + i.ToString() + " " + j.ToString());
+                LoadData(mapGen.chunks[i,j].heightMap,  new int[]{i,j}, 3);
 
-                LoadData(mapGen.chunks[1,1].heightMap,  new []{i,j}, biomes[i,j]);
+
             }
         }
     }
@@ -76,7 +79,7 @@ public class ChunkManager : MonoBehaviour
     {
         numRows = tileType.GetLength(0);
         numCols = tileType.GetLength(1);
-        chunks=new Tile[numRows,numCols];
+        chunks = new Tile[numRows,numCols];
         
         //Renders the chunk
         CreateChunks(tileType, chunkPosition, biome);
@@ -107,7 +110,7 @@ public class ChunkManager : MonoBehaviour
     /// <param name="chunkPositions">The positions of tiles within the tile</param>
     /// <param name="mapPosition">An array where the chunks in the map</param>
     /// <param name="biome">The biome of the tile</param>
-    private void CreateChunks(string[,] chunkPositions,int[] mapPosition, int biome)
+    private void CreateChunks(string[,] chunkPositions, int[] mapPosition, int biome)
     {
         // actual chunk creation
 
