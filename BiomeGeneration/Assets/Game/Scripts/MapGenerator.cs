@@ -10,7 +10,7 @@ public class MapGenerator
     //Default is 2
     public int numChunks; // Uses this to construct this into a square
 
-    public Biome[,] chunkBiomes;
+    public int[,] chunkBiomes;
 
     public ChunkTile[,] chunks;
 
@@ -21,15 +21,25 @@ public class MapGenerator
         this.chunkSize = chunkSize;
         this.numChunks = numChunks;
 
-        chunkBiomes = new Biome[numChunks,numChunks];
+        chunkBiomes = new int[numChunks,numChunks];
         chunks = new ChunkTile[numChunks,numChunks];
         
         //Then set Biomes...?
 
-        //For entire world
+        //For entire world, not needed actually
         ExampleScript testPerlinScript = new ExampleScript();
 
-        
+        float perlinStep = 0.25f;
+
+        int perlinX = 0;
+        int perlinY = 0;
+
+        float startingX = 0;
+        float startingY = 0;
+
+        float currX = 0;
+        float currY = 0;
+
         //Create perlin texture
         
         //Run generation for each chunk
@@ -38,9 +48,15 @@ public class MapGenerator
 
             for(int j = 0; j < numChunks; j++){
                 Debug.Log(j);
-                chunks[i,j] = new ChunkTile(Biome.Winter, chunkSize);
+                chunks[i,j] = new ChunkTile(chunkSize, currX, currY, perlinStep);
                 Debug.Log("Chunk Made");
-                
+
+                //needs to be chages
+                currX += perlinStep * chunkSize;
+                currY += perlinStep * chunkSize;
+
+                //Get current biome and add to current biome map
+                chunkBiomes[i,j] = chunks[i,j].biome;
             }
         }
 
@@ -65,25 +81,37 @@ public class MapGenerator
 
     public class ChunkTile {
 
-        public Biome biome;
+        public int biome;
         int chunkSize; 
 
         public string[,] heightMap; //Numbers and letters are used in tandem
 
         public char[,] objectMap; //Only chars are used for this
 
-        ExampleScript testPerlinScript = new ExampleScript();
+        //ExampleScript testPerlinScript = new ExampleScript();
         
+
+        float startingX, startingY;
+        float perlinStep;
+
         //This is only set when you initialize since it needs it for ...
         // Literally Everything Else
-        public ChunkTile(Biome biome, int chunkSize){
-            this.biome = biome;
+        public ChunkTile(int chunkSize, float startingX, float startingY, float perlinStep){
+            //this.biome = biome;
             this.chunkSize = chunkSize;
+
+            this.startingX = startingX;
+            this.startingY = startingY;
+            this.perlinStep = perlinStep;
+
+
+
 
             heightMap = new string[chunkSize,chunkSize];
 
             setHeights();
             
+            //plantTrees();
             //heightMap=new string[chunkSize,chunkSize]; //Numbers and letters are used in tandem
             //objectMap=new char[chunkSize,chunkSize]; //Only chars are used for this
 
@@ -92,17 +120,48 @@ public class MapGenerator
 
 
         void setHeights(){
+            int sumOfHeights = 0;
+
+            int avgHeight = 0;
+
+            int currHeight = 0;
+
             for (int i = 0; i < chunkSize; i++){
                 for (int j = 0; j < chunkSize; j++){
-                    //if(i % 2 == 0){
-                        heightMap[i,j] = ((int)(5 * Mathf.PerlinNoise(i * 0.25f, j * 0.25f))).ToString();
-                        //heightMap[i,j] = j.ToString();
-                    //} else {
-                        //heightMap[i,j] = "0";
-                    //}
+                    
+                    currHeight = ((int)(8 * Mathf.PerlinNoise((i * perlinStep) + startingX, (j * perlinStep) + startingY)));
+
+                    heightMap[i,j] = currHeight.ToString();
+                    sumOfHeights += currHeight;
+                  
                 }
             }
+
+            //Determines biome based on Avg Height
+            avgHeight = (int)((sumOfHeights % 6));
+            
+            this.biome = avgHeight;
+            
+
         }
+
+        void plantTrees(){
+
+
+            for (int i = 0; i < chunkSize; i++){
+                for (int j = 0; j < chunkSize; j++){
+
+                    if(heightMap[i,j] != "0"){
+                        heightMap[i,j] += "t";
+                    }
+
+                }
+
+            }
+
+
+        }
+
 
         
     }

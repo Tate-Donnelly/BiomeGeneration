@@ -47,11 +47,22 @@ public class ChunkManager : MonoBehaviour
             { 3, 4, 5}
         };
         
-        mapGen = new MapGenerator(16, 4);
+        //First number is chunk size
+        // Second is n x n num of chunks
+        mapGen = new MapGenerator(8, 7);
+        
 
+        // mapWidth = tileWidth * mapGen.chunkSize * (biomes.GetLength(0)/100) * biomes.GetLength(0);
+        // mapLength = tileWidth * mapGen.chunkSize * (biomes.GetLength(1)/100) * biomes.GetLength(1);
 
-        mapWidth = tileWidth * mapGen.chunkSize * (biomes.GetLength(0)/100) * biomes.GetLength(0);
-        mapLength = tileWidth * mapGen.chunkSize * (biomes.GetLength(1)/100) * biomes.GetLength(1);
+        //  mapWidth = tileWidth * chunk.GetLength(0) * .30f * biomes.GetLength(0);
+        // mapLength = tileWidth * chunk.GetLength(1) * .20f * biomes.GetLength(1);
+
+        mapWidth = tileWidth * mapGen.chunkSize * 0.5f;
+        mapLength = tileWidth * mapGen.chunkSize * 0.5f;
+
+        // mapWidth = tileWidth * mapGen.chunkSize * (mapGen.chunkSize/100) * biomes.GetLength(0);
+        // mapLength = tileWidth * mapGen.chunkSize * (mapGen.chunkSize/100) * biomes.GetLength(1);
 
         
         for (int i = 0; i < mapGen.numChunks; i++)
@@ -60,8 +71,11 @@ public class ChunkManager : MonoBehaviour
             {
                 // This is where the biomes need to be generated
                 //print(mapGen.chunks[0,0].heightMap);
-                Debug.Log((mapGen.chunks[i,j] == null) + " " + i.ToString() + " " + j.ToString());
-                LoadData(mapGen.chunks[i,j].heightMap,  new int[]{i,j}, 3);
+                //Debug.Log((mapGen.chunks[i,j] == null) + " " + i.ToString() + " " + j.ToString());
+                int[] loc = {i,j};
+
+                LoadData(mapGen.chunks[i,j].heightMap, loc, mapGen.chunkBiomes[i,j]);
+                Debug.Log(loc[0] + " " + loc[1]);
 
 
             }
@@ -177,12 +191,11 @@ public class ChunkManager : MonoBehaviour
     /// <param name="tileRow">The row of the tile in chunkPositions</param>
     /// <param name="tileCol">The col of the tile in chunkPositions</param>
     /// <returns>Returns the position of the tile in the scene</returns>
-    private Vector3 GetTilePosition(int height, int[] mapPosition, int tileRow, int tileCol)
-    {
-        float xPos = ((tileRow - (mapWidth*mapPosition[0])) * tileWidth);
+    private Vector3 GetTilePosition(int height, int[] mapPosition, int tileRow, int tileCol){
+        float xPos = ((tileRow - (mapWidth * mapPosition[0])) * tileWidth);
         float yPos = height-tileHeight-2;
         yPos = Mathf.Clamp(yPos, -tileHeight, 10);
-        float zPos = ((tileCol - (mapLength*mapPosition[1])) * tileWidth);
+        float zPos = ((tileCol - (mapLength * mapPosition[1])) * tileWidth);
         return new Vector3(xPos, yPos, zPos);
     }
     
